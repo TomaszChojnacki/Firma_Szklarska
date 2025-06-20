@@ -1,4 +1,6 @@
-package org.example.gui;
+package org.example.gui.admin;
+
+import org.example.gui.Okno;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +32,15 @@ public class PanelAdministratora extends JPanel {
         JTextField poleHaslo = new JTextField(20);
 
         JLabel labelRola = new JLabel("Rola:");
-        JComboBox<String> poleRola = new JComboBox<>(new String[]{"KLIENT", "PRACOWNIK", "PRACOWNIK_OBSLUGI_KLIENTA"});
+        JComboBox<String> poleRola = new JComboBox<>(new String[]{
+                "KLIENT",
+                "PRACOWNIK",
+                "PRACOWNIK_OBSLUGI_KLIENTA",
+                "KIEROWNIK_PRODUKCJI",
+                "MAGAZYNIER",
+                "PRACOWNIK_PRODUKCJI"
+        });
+
 
         JButton przyciskDodaj = new JButton("Dodaj użytkownika");
 

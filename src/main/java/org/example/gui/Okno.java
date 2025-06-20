@@ -1,16 +1,21 @@
 package org.example.gui;
 
+import org.example.gui.admin.PanelAdministratora;
 import org.example.gui.oferty.PanelOferty;
 import org.example.klient.Klient;
 
 import javax.swing.*;
 import java.awt.*;
+import org.example.baza.BazaDanych;
+import org.example.gui.zamowienia.PanelListaZamowien;
+
 
 public class Okno extends JFrame {
 
     private JPanel panelContent;
 
     public Okno() {
+        BazaDanych.usunStareZKoszyka();
         setTitle("System firmy szklarskiej");
         setSize(1100, 600);
         setLocationRelativeTo(null);
@@ -23,7 +28,7 @@ public class Okno extends JFrame {
         panelMenu.setBackground(new Color(33, 150, 243)); // Niebieskie tło
 
         JButton btnOferty = new JButton("Przeglądaj Oferty");
-        JButton btnNoweZamowienie = new JButton("Nowe Zamówienie");
+        JButton btnKoszyk = new JButton("Koszyk");
         JButton btnListaZamowien = new JButton("Lista Zamówień");
         JButton btnZarzadzanieUzytkownikami = new JButton("Zarządzanie Użytkownikami");
         JButton btnWyloguj = new JButton("Wyloguj");
@@ -38,7 +43,8 @@ public class Okno extends JFrame {
             panelMenu.add(btnPanelBiura);
         }
 
-        JButton[] przyciski = {btnOferty, btnNoweZamowienie, btnListaZamowien, btnZarzadzanieUzytkownikami, btnWyloguj};
+
+        JButton[] przyciski = {btnOferty, btnKoszyk, btnListaZamowien, btnZarzadzanieUzytkownikami, btnWyloguj};
 
         for (JButton btn : przyciski) {
             btn.setMaximumSize(new Dimension(200, 50));
@@ -101,8 +107,8 @@ public class Okno extends JFrame {
 
         // Akcje przycisków
         btnOferty.addActionListener(e -> wyswietlPanel(new PanelOferty()));
-        btnNoweZamowienie.addActionListener(e -> wyswietlTrescTekst("Formularz dodawania nowego zamówienia."));
-        btnListaZamowien.addActionListener(e -> wyswietlTrescTekst("Lista zamówień klienta/pracownika."));
+        btnKoszyk.addActionListener(e -> wyswietlPanel(new org.example.gui.koszyk.PanelKoszyka()));
+        btnListaZamowien.addActionListener(e -> wyswietlPanel(new PanelListaZamowien()));
         btnZarzadzanieUzytkownikami.addActionListener(e -> {
             if ("ADMIN".equals(Klient.zalogowanaRola)) {
                 wyswietlPanel(new PanelAdministratora());
@@ -123,14 +129,7 @@ public class Okno extends JFrame {
         setVisible(true);
     }
 
-    private void wyswietlTrescTekst(String tresc) {
-        panelContent.removeAll();
-        JLabel label = new JLabel(tresc, JLabel.CENTER);
-        label.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        panelContent.add(label, BorderLayout.CENTER);
-        panelContent.revalidate();
-        panelContent.repaint();
-    }
+
 
     public void wyswietlPanel(JPanel panel) {
         panelContent.removeAll();

@@ -1,4 +1,4 @@
-package org.example.gui;
+package org.example.gui.admin;
 
 import org.example.baza.BazaDanych;
 
@@ -14,7 +14,6 @@ public class PanelListaUzytkownikow extends JPanel {
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Panel nagłówka (2 wiersze: tytuł + wyszukiwarka)
         JPanel panelNaglowek = new JPanel();
         panelNaglowek.setLayout(new BoxLayout(panelNaglowek, BoxLayout.Y_AXIS));
         panelNaglowek.setBackground(Color.WHITE);

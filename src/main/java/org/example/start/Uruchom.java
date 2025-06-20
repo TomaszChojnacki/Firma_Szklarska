@@ -9,7 +9,6 @@ public class Uruchom {
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
-            // lub: UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception ex) {
             System.err.println("Nie udało się załadować stylu.");
         }
