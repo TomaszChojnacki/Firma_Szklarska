@@ -96,7 +96,7 @@ public class BazaDanych {
             }
 
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, nowyStatus.toLowerCase());
+            stmt.setString(1, nowyStatus.toUpperCase());
             stmt.setString(2, login);
             return stmt.executeUpdate() > 0;
 

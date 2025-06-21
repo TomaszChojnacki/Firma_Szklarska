@@ -34,7 +34,6 @@ public class PanelAdministratora extends JPanel {
         JLabel labelRola = new JLabel("Rola:");
         JComboBox<String> poleRola = new JComboBox<>(new String[]{
                 "KLIENT",
-                "PRACOWNIK",
                 "PRACOWNIK_OBSLUGI_KLIENTA",
                 "KIEROWNIK_PRODUKCJI",
                 "MAGAZYNIER",

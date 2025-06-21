@@ -17,6 +17,7 @@ public class Okno extends JFrame {
     public Okno() {
         BazaDanych.usunStareZKoszyka();
         BazaDanych.usunZamowieniaZakonczonePoRoku();
+        BazaDanych.usunWygasleKonta();
         setTitle("System firmy szklarskiej");
         setSize(1100, 600);
         setLocationRelativeTo(null);

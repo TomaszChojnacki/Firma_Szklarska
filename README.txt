@@ -1,17 +1,21 @@
-CREATE TABLE uzytkownicy (
+CREATE TABLE IF NOT EXISTS uzytkownicy (
     id SERIAL PRIMARY KEY,
     login VARCHAR(50) NOT NULL UNIQUE,
     haslo VARCHAR(128) NOT NULL,
-    rola VARCHAR(50) NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT 'DOBRY'
+    rola VARCHAR(50) NOT NULL CHECK (rola IN (
+        'ADMIN', 'KLIENT', 'PRACOWNIK_OBSLUGI_KLIENTA', 'KIEROWNIK_PRODUKCJI', 'MAGAZYNIER', 'PRACOWNIK_PRODUKCJI'
+    )),
+    status VARCHAR(20) NOT NULL DEFAULT 'DOBRY' CHECK (status IN ('DOBRY', 'ZWOLNIONY')),
+    data_wygasniecia DATE DEFAULT NULL
 );
+
 
 CREATE TABLE zamowienia (
     id SERIAL PRIMARY KEY,
     login VARCHAR(50) NOT NULL,
     opis TEXT NOT NULL,
     cena DECIMAL(10,2) NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT 'w koszyku',
+    status VARCHAR(50) NOT NULL DEFAULT 'w koszyku',
     data_dodania TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     grupa_id UUID
 );
