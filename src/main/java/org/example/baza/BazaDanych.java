@@ -302,4 +302,72 @@ public class BazaDanych {
     }
 
 
+    // Pobiera zamówienia dla ról produkcyjnych według aktualnego statusu
+    public static List<String[]> pobierzZamowieniaProdukcja(String login, String[] statusy, boolean sortAsc) {
+        List<String[]> lista = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT grupa_id, status, login FROM zamowienia WHERE grupa_id IS NOT NULL");
+
+        if (statusy != null && statusy.length > 0) {
+            sql.append(" AND status IN (");
+            for (int i = 0; i < statusy.length; i++) {
+                sql.append("?");
+                if (i < statusy.length - 1) sql.append(",");
+            }
+            sql.append(")");
+        }
+
+        sql.append(" GROUP BY grupa_id, status, login");
+        sql.append(" ORDER BY MIN(data_dodania) ").append(sortAsc ? "ASC" : "DESC");
+
+        try (Connection conn = DriverManager.getConnection(URL, UZYTKOWNIK, HASLO);
+             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+
+            int index = 1;
+            if (statusy != null && statusy.length > 0) {
+                for (String s : statusy) {
+                    stmt.setString(index++, s);
+                }
+            }
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                lista.add(new String[]{
+                        rs.getString("grupa_id"),
+                        rs.getString("status"),
+                        rs.getString("login")
+                });
+            }
+        } catch (SQLException e) {
+            System.err.println("Błąd pobierania zamówień produkcji: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
+
+    // Aktualizuje status wszystkich pozycji w grupie
+    public static boolean ustawStatusZamowieniaGrupowo(String grupaId, String nowyStatus) {
+        String sql = "UPDATE zamowienia SET status = ? WHERE grupa_id = CAST(? AS UUID)";
+        try (Connection conn = DriverManager.getConnection(URL, UZYTKOWNIK, HASLO);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nowyStatus);
+            stmt.setString(2, grupaId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Błąd zmiany statusu grupowego: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static void usunZamowieniaZakonczonePoRoku() {
+        String sql = "DELETE FROM zamowienia WHERE status = 'zakończone' AND data_dodania < NOW() - INTERVAL '1 year'";
+        try (Connection conn = DriverManager.getConnection(URL, UZYTKOWNIK, HASLO);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            int ile = stmt.executeUpdate();
+            System.out.println("Usunięto zakończonych zamówień: " + ile);
+        } catch (SQLException e) {
+            System.err.println("Błąd podczas usuwania zakończonych zamówień: " + e.getMessage());
+        }
+    }
+
 }
