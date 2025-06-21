@@ -20,20 +20,20 @@ public class BazaDanychStatusTest {
 
     @Test
     public void testUstawienieStatusuZwolniony() {
-        boolean sukces = BazaDanych.ustawStatus(LOGIN, "zwolniony");
+        boolean sukces = BazaDanych.ustawStatus(LOGIN, "ZWOLNIONY");
         assertTrue(sukces, "Status powinien zostać zmieniony");
 
         String status = BazaDanych.sprawdzStatus(LOGIN);
-        assertEquals("zwolniony", status, "Status powinien być ustawiony na 'zwolniony'");
+        assertEquals("ZWOLNIONY", status, "Status powinien być ustawiony na 'ZWOLNIONY'");
     }
 
     @Test
     public void testUstawienieStatusuDobry() {
-        BazaDanych.ustawStatus(LOGIN, "zwolniony");
-        BazaDanych.ustawStatus(LOGIN, "dobry");
+        BazaDanych.ustawStatus(LOGIN, "ZWOLNIONY");
+        BazaDanych.ustawStatus(LOGIN, "DOBRY");
 
         String status = BazaDanych.sprawdzStatus(LOGIN);
-        assertEquals("dobry", status, "Status powinien być przywrócony do 'dobry'");
+        assertEquals("DOBRY", status, "Status powinien być przywrócony do 'DOBRY'");
     }
 
     @AfterEach
